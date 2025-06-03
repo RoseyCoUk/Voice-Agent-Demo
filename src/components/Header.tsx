@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spine } from 'lucide-react';
+import { Spline as Spine } from 'lucide-react';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
