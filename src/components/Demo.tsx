@@ -221,6 +221,11 @@ Hours: Monday-Friday 8am-7pm, Saturday 9am-2pm`
                     {isCallActive ? 'End Call' : 'Start Call'}
                   </span>
                 </button>
+                {isCallActive && (
+                  <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-4 rounded-lg">
+                    Start speaking now! The AI assistant is listening and will respond to your questions.
+                  </p>
+                )}
               </div>
               
               <div className="mt-12 pt-6 border-t border-gray-200">
