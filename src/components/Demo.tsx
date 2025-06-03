@@ -10,7 +10,8 @@ const Demo = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   
   useEffect(() => {
-    const vapiInstance = new Vapi("698ed79b-af7c-4187-b6a5-d198beb749bb");
+    // Initialize with public key instead of private key
+    const vapiInstance = new Vapi("pk_698ed79b-af7c-4187-b6a5-d198beb749bb");
     setVapi(vapiInstance);
 
     return () => {
