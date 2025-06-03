@@ -168,6 +168,14 @@ Hours: Monday-Friday 8am-7pm, Saturday 9am-2pm`
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Experience how our AI assistant handles patient inquiries and appointments
           </p>
+          <div className="mt-6 bg-blue-50 p-6 rounded-lg text-left max-w-2xl mx-auto">
+            <p className="text-gray-700 mb-4">
+              ⚡️ This is a demo VAPI agent. It's here to show what's possible. The final version will be fully customized to your business—tone, answers, booking flow, everything. It'll understand your services, speak like your brand, and only offer available time slots from your calendar.
+            </p>
+            <p className="text-gray-700">
+              You control what it says and how it works.
+            </p>
+          </div>
         </div>
         
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -222,9 +230,14 @@ Hours: Monday-Friday 8am-7pm, Saturday 9am-2pm`
                   </span>
                 </button>
                 {isCallActive && (
-                  <p className="mt-4 text-sm text-gray-600 bg-blue-50 p-4 rounded-lg">
-                    Start speaking now! The AI assistant is listening and will respond to your questions.
-                  </p>
+                  <div className="mt-4 bg-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-700 font-medium">
+                      Start speaking now! The AI assistant is listening and will respond to your questions.
+                    </p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Try asking about appointments, treatments, or any questions from the sample list.
+                    </p>
+                  </div>
                 )}
               </div>
               
