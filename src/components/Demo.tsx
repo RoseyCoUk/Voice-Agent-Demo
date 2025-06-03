@@ -10,7 +10,7 @@ const Demo = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   
   useEffect(() => {
-    const vapiInstance = new Vapi("a74aeeee-0668-4269-8b7f-f249f24fa303");
+    const vapiInstance = new Vapi("698ed79b-af7c-4187-b6a5-d198beb749bb");
     setVapi(vapiInstance);
 
     return () => {
