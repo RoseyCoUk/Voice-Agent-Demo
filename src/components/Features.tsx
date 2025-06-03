@@ -5,34 +5,34 @@ import { Feature } from '../types';
 const Features = () => {
   const features: Feature[] = [
     {
-      icon: <Clock className="h-8 w-8 text-teal-500" />,
-      title: "24/7 Availability",
-      description: "Answer calls with empathy and professionalism any time of day or night."
+      icon: <Clock className="h-8 w-8 text-blue-500" />,
+      title: "Extended Hours",
+      description: "Answer calls and handle appointment requests even outside clinic hours."
     },
     {
-      icon: <FileText className="h-8 w-8 text-teal-500" />,
-      title: "Service Explanation",
-      description: "Clearly explain therapy services and how new clients can get started."
+      icon: <FileText className="h-8 w-8 text-blue-500" />,
+      title: "Treatment Information",
+      description: "Clearly explain our osteopathic services and treatment approaches."
     },
     {
-      icon: <Calendar className="h-8 w-8 text-teal-500" />,
-      title: "Appointment Scheduling",
-      description: "Help schedule appointments or take contact details for callbacks."
+      icon: <Calendar className="h-8 w-8 text-blue-500" />,
+      title: "Easy Scheduling",
+      description: "Help patients book appointments or arrange practitioner callbacks."
     },
     {
-      icon: <Phone className="h-8 w-8 text-teal-500" />,
-      title: "No Missed Calls",
-      description: "Ensure no call goes unanswered, even during busy hours."
+      icon: <Phone className="h-8 w-8 text-blue-500" />,
+      title: "Always Available",
+      description: "Ensure every patient call is answered, even during treatment hours."
     },
     {
-      icon: <Settings className="h-8 w-8 text-teal-500" />,
-      title: "Automation",
-      description: "Save admin time by automating responses to routine questions."
+      icon: <Settings className="h-8 w-8 text-blue-500" />,
+      title: "Efficient Care",
+      description: "Save time by automating responses to common patient questions."
     },
     {
-      icon: <Award className="h-8 w-8 text-teal-500" />,
-      title: "Professional Image",
-      description: "Enhance your practice's professional appearance with consistent service."
+      icon: <Award className="h-8 w-8 text-blue-500" />,
+      title: "Professional Service",
+      description: "Enhance your clinic's reputation with consistent, professional communication."
     }
   ];
 
@@ -44,7 +44,7 @@ const Features = () => {
             How Our AI Assistant Can Help
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            This smart voice agent enhances your therapy practice's client experience
+            This smart voice agent enhances your osteopathy clinic's patient experience
           </p>
         </div>
         
