@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Spline as Spine } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { useConfig, getColorClasses } from '../config/config-context';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { config } = useConfig();
+  const colorClasses = getColorClasses(config.branding.primaryColor);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,6 +15,9 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Dynamically get the icon component
+  const IconComponent = (LucideIcons as any)[config.branding.iconName] || LucideIcons.Building;
 
   return (
     <header 
@@ -23,16 +29,16 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <Spine 
-            className={`h-8 w-8 ${isScrolled ? 'text-blue-600' : 'text-blue-500'}`} 
+          <IconComponent 
+            className={`h-8 w-8 ${isScrolled ? colorClasses.accentDark : colorClasses.accent}`} 
             strokeWidth={2}
           />
           <span className={`font-semibold text-xl ${isScrolled ? 'text-gray-800' : 'text-gray-700'}`}>
-            Spinal Solutions
+            {config.business.name}
           </span>
         </div>
         <nav>
-          <button className="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+          <button className={`px-4 py-2 rounded-full text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${colorClasses.primary} ${colorClasses.primaryHover} ${colorClasses.ring}`}>
             Contact Us
           </button>
         </nav>

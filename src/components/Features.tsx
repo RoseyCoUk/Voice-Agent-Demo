@@ -1,40 +1,10 @@
 import React from 'react';
-import { Clock, Calendar, Phone, FileText, Award, Settings } from 'lucide-react';
-import { Feature } from '../types';
+import * as LucideIcons from 'lucide-react';
+import { useConfig, getColorClasses } from '../config/config-context';
 
 const Features = () => {
-  const features: Feature[] = [
-    {
-      icon: <Clock className="h-8 w-8 text-blue-500" />,
-      title: "Extended Hours",
-      description: "Answer calls and handle appointment requests even outside clinic hours."
-    },
-    {
-      icon: <FileText className="h-8 w-8 text-blue-500" />,
-      title: "Treatment Information",
-      description: "Clearly explain our osteopathic services and treatment approaches."
-    },
-    {
-      icon: <Calendar className="h-8 w-8 text-blue-500" />,
-      title: "Easy Scheduling",
-      description: "Help patients book appointments or arrange practitioner callbacks."
-    },
-    {
-      icon: <Phone className="h-8 w-8 text-blue-500" />,
-      title: "Always Available",
-      description: "Ensure every patient call is answered, even during treatment hours."
-    },
-    {
-      icon: <Settings className="h-8 w-8 text-blue-500" />,
-      title: "Efficient Care",
-      description: "Save time by automating responses to common patient questions."
-    },
-    {
-      icon: <Award className="h-8 w-8 text-blue-500" />,
-      title: "Professional Service",
-      description: "Enhance your clinic's reputation with consistent, professional communication."
-    }
-  ];
+  const { config } = useConfig();
+  const colorClasses = getColorClasses(config.branding.primaryColor);
 
   return (
     <section className="py-20 bg-white">
@@ -44,21 +14,26 @@ const Features = () => {
             How Our AI Assistant Can Help
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            This smart voice agent enhances your osteopathy clinic's patient experience
+            This smart voice agent enhances your {config.business.industry.toLowerCase()}'s {config.services.terminology.client} experience
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <div 
-              key={index} 
-              className="bg-blue-50 rounded-xl p-8 transition-all duration-300 hover:shadow-lg hover:transform hover:scale-105"
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </div>
-          ))}
+          {config.features.map((feature, index) => {
+            const IconComponent = (LucideIcons as any)[feature.icon] || LucideIcons.Star;
+            return (
+              <div 
+                key={index} 
+                className={`rounded-xl p-8 transition-all duration-300 hover:shadow-lg hover:transform hover:scale-105 ${colorClasses.background}`}
+              >
+                <div className="mb-4">
+                  <IconComponent className={`h-8 w-8 ${colorClasses.accent}`} />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
