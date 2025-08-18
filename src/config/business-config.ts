@@ -23,6 +23,7 @@ export interface BusinessConfig {
     vapiToken: string;
     voiceId: string; // ElevenLabs voice ID
     systemPrompt: string;
+    greeting: string; // First message the AI says when call starts
     personality: {
       tone: string;
       traits: string[];
@@ -93,6 +94,7 @@ export const defaultOsteopathyConfig: BusinessConfig = {
     name: "Spinal Solutions Assistant",
     vapiToken: "a74aeeee-0668-4269-8b7f-f249f24fa303",
     voiceId: "21m00Tcm4TlvDq8ikWAM",
+    greeting: "Hello! Thank you for calling Spinal Solutions Osteopathy Clinic. I'm here to help you with appointments, answer questions about our treatments, or connect you with Dr. Sarah. How can I assist you today?",
     systemPrompt: `You are an empathetic AI assistant for Spinal Solutions Osteopathy Clinic. Your role is to:
 
 1. Initial Assessment & Booking:

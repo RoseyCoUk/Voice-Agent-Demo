@@ -19,8 +19,9 @@ export const legalServicesConfig: BusinessConfig = {
   
   assistant: {
     name: "LegalAssist Pro Assistant",
-    vapiToken: "your-vapi-token-here",
+    vapiToken: "a74aeeee-0668-4269-8b7f-f249f24fa303",
     voiceId: "21m00Tcm4TlvDq8ikWAM",
+    greeting: "Good day, thank you for calling LegalAssist Pro. I'm here to help you schedule consultations, answer questions about our legal services, or connect you with the right attorney for your needs. How may I assist you today?",
     systemPrompt: `You are a professional AI assistant for LegalAssist Pro Law Firm. Your role is to:
 
 1. Initial Client Screening:
@@ -197,8 +198,9 @@ export const restaurantConfig: BusinessConfig = {
   
   assistant: {
     name: "Bella Vista Assistant",
-    vapiToken: "your-vapi-token-here", 
+    vapiToken: "a74aeeee-0668-4269-8b7f-f249f24fa303", 
     voiceId: "21m00Tcm4TlvDq8ikWAM",
+    greeting: "Ciao! Welcome to Bella Vista Bistro. I'm here to help you with reservations, answer questions about our authentic Italian cuisine, or assist with special event planning. How can I make your dining experience perfect today?",
     systemPrompt: `You are a warm and professional AI assistant for Bella Vista Bistro. Your role is to:
 
 1. Reservations & Seating:
@@ -375,8 +377,9 @@ export const techSupportConfig: BusinessConfig = {
   
   assistant: {
     name: "CloudTech Support Assistant",
-    vapiToken: "your-vapi-token-here",
+    vapiToken: "a74aeeee-0668-4269-8b7f-f249f24fa303",
     voiceId: "21m00Tcm4TlvDq8ikWAM",
+    greeting: "Hello, and thank you for calling CloudTech Solutions support. I'm here to help resolve your technical issues, schedule support sessions, or connect you with our engineering team. What can I help you with today?",
     systemPrompt: `You are a knowledgeable AI assistant for CloudTech Solutions Technical Support. Your role is to:
 
 1. Issue Identification & Triage:
@@ -531,5 +534,162 @@ Hours: 24/7 Technical Support Available`,
     title: "AI Technical Support Demo - CloudTech Solutions",
     description: "Experience how an AI assistant can improve technical support at CloudTech Solutions, providing 24/7 assistance and smart escalation.",
     keywords: ["AI assistant", "technical support", "cloud services", "help desk", "IT support"]
+  }
+};
+
+// Dental Clinic Demo Configuration
+export const dentalClinicConfig: BusinessConfig = {
+  business: {
+    name: "Bright Smile Dental",
+    industry: "Healthcare",
+    tagline: "Complete family dental care with a gentle touch",
+    description: "Experience how an AI assistant handles appointment scheduling and patient inquiries for a busy dental practice.",
+    location: "Medical District",
+    hours: "Monday-Friday 8am-5pm, Saturday 9am-2pm"
+  },
+  
+  branding: {
+    primaryColor: "blue",
+    accentColor: "blue",
+    iconName: "Heart"
+  },
+  
+  assistant: {
+    name: "Bright Smile Assistant",
+    vapiToken: "a74aeeee-0668-4269-8b7f-f249f24fa303",
+    voiceId: "21m00Tcm4TlvDq8ikWAM",
+    greeting: "Hello! Thank you for calling Bright Smile Dental. I'm here to help you schedule appointments, answer questions about our dental services, or assist with any urgent dental concerns. How can I help you maintain that bright smile today?",
+    systemPrompt: `You are a caring AI assistant for Bright Smile Dental. Your role is to:
+
+1. Appointment Scheduling:
+- Book cleanings, check-ups, and dental procedures
+- Explain appointment types and duration 
+- Handle emergency appointment requests
+- Confirm patient insurance and contact details
+
+2. Treatment Information:
+- Describe common dental procedures
+- Explain preventive care recommendations
+- Discuss payment options and insurance coverage
+- Share preparation instructions for procedures
+
+3. Emergency Dental Care:
+- Identify urgent dental issues requiring immediate attention
+- Provide basic pain management advice
+- Schedule emergency appointments with on-call dentist
+- Give directions to the clinic for urgent visits
+
+4. Patient Care:
+- Address dental anxiety and concerns
+- Explain office policies and procedures
+- Collect medical history updates
+- Provide post-treatment care instructions
+
+Important Guidelines:
+- Never diagnose dental conditions or provide medical advice
+- Always recommend professional evaluation for dental concerns
+- Maintain a calm, reassuring tone for anxious patients
+- Emphasize the importance of regular dental care
+
+Location: Medical District
+Hours: Monday-Friday 8am-5pm, Saturday 9am-2pm`,
+    personality: {
+      tone: "caring, professional, and reassuring",
+      traits: ["empathetic", "knowledgeable", "patient", "trustworthy"]
+    }
+  },
+  
+  services: {
+    primary: [
+      "Cleanings & Checkups",
+      "Cosmetic Dentistry", 
+      "Dental Implants",
+      "Root Canal Therapy",
+      "Orthodontics"
+    ],
+    secondary: [
+      "Emergency Care",
+      "Teeth Whitening",
+      "Dental Crowns",
+      "Oral Surgery"
+    ],
+    terminology: {
+      client: "patient",
+      service: "treatment",
+      provider: "dentist",
+      appointment: "appointment"
+    }
+  },
+  
+  questionCategories: [
+    {
+      title: "Appointment Scheduling",
+      emoji: "📅",
+      description: "Shows how the assistant handles dental appointment booking and scheduling.",
+      questions: [
+        "I need to schedule a cleaning",
+        "Do you have any openings this week?",
+        "Can I book my child for a checkup?",
+        "I have a dental emergency - when can I be seen?"
+      ]
+    },
+    {
+      title: "Dental Services & Treatments",
+      emoji: "🦷",
+      description: "Explains dental services and treatment options.",
+      questions: [
+        "What cosmetic dentistry options do you offer?",
+        "How much does teeth whitening cost?",
+        "Do you accept my dental insurance?",
+        "What's involved in getting dental implants?"
+      ]
+    },
+    {
+      title: "Emergency Dental Care",
+      emoji: "🚨",
+      description: "Handles urgent dental issues and emergency appointments.",
+      questions: [
+        "I have severe tooth pain right now",
+        "My tooth broke - what should I do?",
+        "Can I get emergency dental care on weekends?",
+        "I think I have an infection in my tooth"
+      ]
+    }
+  ],
+  
+  features: [
+    {
+      icon: "Clock",
+      title: "24/7 Scheduling",
+      description: "Book appointments anytime, even outside office hours."
+    },
+    {
+      icon: "Shield",
+      title: "Emergency Triage",
+      description: "Identify urgent dental issues and prioritize emergency care."
+    },
+    {
+      icon: "Calendar",
+      title: "Smart Booking",
+      description: "Efficiently schedule appointments based on treatment needs."
+    },
+    {
+      icon: "Heart",
+      title: "Patient Care",
+      description: "Provide compassionate support for dental anxiety and concerns."
+    }
+  ],
+  
+  demo: {
+    title: "Experience Dental AI",
+    subtitle: "See how our AI assistant enhances patient care and appointment management",
+    disclaimer: "This is a demonstration only. Actual dental appointments require confirmation and professional evaluation.",
+    callToAction: "Experience how our AI assistant makes dental care more accessible and comfortable."
+  },
+  
+  meta: {
+    title: "AI Dental Assistant Demo - Bright Smile Dental",
+    description: "Experience how an AI assistant can improve patient communication at Bright Smile Dental, making dental care more accessible.",
+    keywords: ["AI assistant", "dental", "dentist", "appointments", "patient care"]
   }
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageSquare, AlertCircle, ChevronDown } from 'lucide-react';
+import { Phone, MessageSquare, AlertCircle, ChevronDown, Mic, MicOff } from 'lucide-react';
 import { QuestionCategory } from '../types';
 import Vapi from '@vapi-ai/web';
 import { useConfig, getColorClasses } from '../config/config-context';
@@ -11,26 +11,93 @@ const Demo = () => {
   const [isCallActive, setIsCallActive] = useState(false);
   const [vapi, setVapi] = useState<Vapi | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [micPermission, setMicPermission] = useState<'unknown' | 'granted' | 'denied' | 'requesting'>('unknown');
+  const [callError, setCallError] = useState<string | null>(null);
+  const [showSetupGuide, setShowSetupGuide] = useState(false);
   
   useEffect(() => {
+    console.log('Initializing VAPI with token:', config.assistant.vapiToken?.substring(0, 8) + '...');
     const vapiInstance = new Vapi(config.assistant.vapiToken);
     setVapi(vapiInstance);
+
+    // Check initial microphone permission status
+    checkMicrophonePermission();
 
     return () => {
       if (vapiInstance) {
         vapiInstance.stop();
       }
     };
-  }, []);
+  }, [config.assistant.vapiToken]);
+
+  const checkMicrophonePermission = async () => {
+    try {
+      if (navigator.permissions) {
+        const permission = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+        setMicPermission(permission.state as 'granted' | 'denied');
+        
+        // Listen for permission changes
+        permission.onchange = () => {
+          setMicPermission(permission.state as 'granted' | 'denied');
+        };
+      }
+    } catch (error) {
+      console.log('Permission API not available, will request on first use');
+    }
+  };
+
+  const requestMicrophonePermission = async () => {
+    try {
+      setMicPermission('requesting');
+      setCallError(null);
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Stop the stream immediately as we just needed permission
+      stream.getTracks().forEach(track => track.stop());
+      
+      setMicPermission('granted');
+      return true;
+    } catch (error) {
+      console.error('Microphone permission denied:', error);
+      setMicPermission('denied');
+      setCallError('Microphone access is required for voice calls. Please allow microphone access and try again.');
+      return false;
+    }
+  };
   
   // Use question categories from config
   const questionCategories = config.questionCategories;
 
+  const isConfigurationValid = () => {
+    return config.assistant.vapiToken && 
+           config.assistant.vapiToken !== "your-vapi-token-here" &&
+           config.assistant.voiceId &&
+           config.assistant.voiceId !== "your-voice-id-here";
+  };
+
   const handleCallStart = async () => {
     if (!vapi || isCallActive) return;
     
+    // Check if configuration is valid
+    if (!isConfigurationValid()) {
+      setCallError('Demo configuration incomplete. VAPI token and voice ID need to be configured.');
+      setShowSetupGuide(true);
+      return;
+    }
+    
+    // Check and request microphone permission first
+    if (micPermission !== 'granted') {
+      const permissionGranted = await requestMicrophonePermission();
+      if (!permissionGranted) {
+        return;
+      }
+    }
+    
     try {
       setIsCallActive(true);
+      setCallError(null);
+      setShowSetupGuide(false);
+      
       await vapi.start({
         transcriber: {
           provider: "deepgram",
@@ -52,19 +119,85 @@ const Demo = () => {
           voiceId: config.assistant.voiceId
         },
         name: config.assistant.name,
+        firstMessage: config.assistant.greeting,
       });
 
       vapi.on("call-end", () => {
         setIsCallActive(false);
+        setCallError(null);
       });
 
       vapi.on("error", (error) => {
         console.error("Call error:", error);
+        console.error("Call error details:", JSON.stringify(error, null, 2));
         setIsCallActive(false);
+        
+        let errorMessage = 'Unknown error occurred';
+        
+        if (error && typeof error === 'object') {
+          if (error.message) {
+            errorMessage = error.message;
+          } else if (error.error) {
+            errorMessage = error.error;
+          } else if (error.toString && error.toString() !== '[object Object]') {
+            errorMessage = error.toString();
+          } else {
+            errorMessage = `Error type: ${error.type || 'unknown'}, Code: ${error.code || 'unknown'}`;
+          }
+        } else if (error) {
+          errorMessage = String(error);
+        }
+        
+        if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('invalid token')) {
+          setCallError('Invalid VAPI token. Please check your VAPI configuration.');
+          setShowSetupGuide(true);
+        } else if (errorMessage.includes('voice') || errorMessage.includes('11labs')) {
+          setCallError('Voice configuration error. Please check your ElevenLabs voice ID.');
+          setShowSetupGuide(true);
+        } else if (errorMessage.includes('credits') || errorMessage.includes('billing')) {
+          setCallError('VAPI account issue. Please check your VAPI account credits and billing.');
+        } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+          setCallError('Network connection error. Please check your internet connection.');
+        } else {
+          setCallError(`Call failed: ${errorMessage}`);
+        }
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to start call:", error);
+      console.error("Start call error details:", JSON.stringify(error, null, 2));
       setIsCallActive(false);
+      
+      let errorMessage = 'Unknown error occurred';
+      
+      if (error && typeof error === 'object') {
+        if (error.message) {
+          errorMessage = error.message;
+        } else if (error.error) {
+          errorMessage = error.error;
+        } else if (error.toString && error.toString() !== '[object Object]') {
+          errorMessage = error.toString();
+        } else {
+          errorMessage = `Error type: ${error.type || 'unknown'}, Code: ${error.code || 'unknown'}`;
+        }
+      } else if (error) {
+        errorMessage = String(error);
+      }
+      
+      if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('invalid token')) {
+        setCallError('Invalid VAPI token. Please check your VAPI configuration.');
+        setShowSetupGuide(true);
+      } else if (errorMessage.includes('voice') || errorMessage.includes('11labs')) {
+        setCallError('Voice configuration error. Please check your ElevenLabs voice ID.');
+        setShowSetupGuide(true);
+      } else if (errorMessage.includes('credits') || errorMessage.includes('billing')) {
+        setCallError('VAPI account issue. Please check your VAPI account credits and billing.');
+      } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+        setCallError('Network connection error. Please check your internet connection.');
+      } else if (errorMessage.includes('microphone') || errorMessage.includes('audio') || errorMessage.includes('media')) {
+        setCallError('Audio access error. Please ensure microphone permissions are granted.');
+      } else {
+        setCallError(`Failed to start call: ${errorMessage}`);
+      }
     }
   };
 
@@ -72,6 +205,33 @@ const Demo = () => {
     if (vapi && isCallActive) {
       vapi.stop();
       setIsCallActive(false);
+      setCallError(null);
+    }
+  };
+
+  const getMicrophoneStatusIcon = () => {
+    switch (micPermission) {
+      case 'granted':
+        return <Mic className="h-4 w-4 text-green-600" />;
+      case 'denied':
+        return <MicOff className="h-4 w-4 text-red-600" />;
+      case 'requesting':
+        return <div className="h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />;
+      default:
+        return <Mic className="h-4 w-4 text-gray-400" />;
+    }
+  };
+
+  const getMicrophoneStatusText = () => {
+    switch (micPermission) {
+      case 'granted':
+        return 'Microphone ready';
+      case 'denied':
+        return 'Microphone access denied';
+      case 'requesting':
+        return 'Requesting microphone access...';
+      default:
+        return 'Microphone access needed';
     }
   };
 
@@ -87,7 +247,7 @@ const Demo = () => {
           </p>
           <div className={`mt-6 p-6 rounded-lg text-left max-w-2xl mx-auto ${colorClasses.background}`}>
             <p className="text-gray-700 mb-4">
-              ⚡️ This is a demo VAPI agent. It's here to show what's possible. The final version will be fully customized to your business—tone, answers, booking flow, everything. It'll understand your services, speak like your brand, and only offer available time slots from your calendar.
+              ⚡️ This is a demo voice agent. It's here to show what's possible. The final version will be fully customized to your business—tone, answers, booking flow, everything. It'll understand your services, speak like your brand, and only offer available time slots from your calendar.
             </p>
             <p className="text-gray-700">
               You control what it says and how it works.
@@ -133,23 +293,106 @@ const Demo = () => {
                 <p className="text-gray-600 mb-8">
                   {config.demo.callToAction}
                 </p>
+                
+                {/* Microphone Status */}
+                <div className="mb-6 flex items-center justify-center gap-2">
+                  {getMicrophoneStatusIcon()}
+                  <span className={`text-sm font-medium ${
+                    micPermission === 'granted' ? 'text-green-700' :
+                    micPermission === 'denied' ? 'text-red-700' :
+                    micPermission === 'requesting' ? 'text-blue-700' :
+                    'text-gray-600'
+                  }`}>
+                    {getMicrophoneStatusText()}
+                  </span>
+                </div>
+
                 <button 
                   onClick={isCallActive ? handleCallEnd : handleCallStart}
-                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md text-white ${
+                  disabled={micPermission === 'requesting'}
+                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
                     isCallActive 
                       ? 'bg-red-500 hover:bg-red-600' 
-                      : `${colorClasses.primary} ${colorClasses.primaryHover}`
+                      : isConfigurationValid() 
+                        ? `${colorClasses.primary} ${colorClasses.primaryHover}`
+                        : 'bg-amber-500 hover:bg-amber-600'
                   }`}
                 >
                   <Phone className="h-5 w-5" />
                   <span className="font-medium">
-                    {isCallActive ? 'End Call' : 'Start Call'}
+                    {isCallActive ? 'End Call' : 
+                     micPermission === 'requesting' ? 'Requesting Permission...' : 
+                     !isConfigurationValid() ? 'Setup Required' : 'Start Call'}
                   </span>
                 </button>
+                
+                {/* Error Display */}
+                {callError && (
+                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-red-700 font-medium mb-1">Call Failed</p>
+                        <p className="text-sm text-red-600">{callError}</p>
+                        {micPermission === 'denied' && (
+                          <button
+                            onClick={requestMicrophonePermission}
+                            className="mt-2 text-sm text-red-700 underline hover:text-red-800"
+                          >
+                            Try requesting microphone access again
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Setup Guide */}
+                {showSetupGuide && (
+                  <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-amber-700 font-medium mb-2">Setup Required</p>
+                        <p className="text-sm text-amber-600 mb-3">
+                          To enable voice calls, you need to configure your API keys:
+                        </p>
+                        <div className="text-xs text-amber-600 space-y-2">
+                          <div>
+                            <p className="font-medium">1. Check VAPI Account:</p>
+                            <p>• Log in to <a href="https://vapi.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-700">vapi.ai</a></p>
+                            <p>• Verify you have credits in your account</p>
+                            <p>• Ensure your API token is active</p>
+                            <p>• Current token: <code className="bg-amber-100 px-1 rounded text-xs">{config.assistant.vapiToken?.substring(0, 8)}...</code></p>
+                          </div>
+                          <div>
+                            <p className="font-medium">2. Check ElevenLabs Voice:</p>
+                            <p>• Log in to <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-700">elevenlabs.io</a></p>
+                            <p>• Verify the voice ID exists and is accessible</p>
+                            <p>• Current voice ID: <code className="bg-amber-100 px-1 rounded text-xs">{config.assistant.voiceId}</code></p>
+                          </div>
+                          <div>
+                            <p className="font-medium">3. Common Issues:</p>
+                            <p>• Insufficient VAPI credits</p>
+                            <p>• Invalid or expired API tokens</p>
+                            <p>• Network connectivity issues</p>
+                            <p>• Browser blocking microphone access</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setShowSetupGuide(false)}
+                          className="mt-3 text-sm text-amber-700 underline hover:text-amber-800"
+                        >
+                          Hide setup guide
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {isCallActive && (
                   <div className={`mt-4 p-4 rounded-lg ${colorClasses.background}`}>
                     <p className="text-sm text-gray-700 font-medium">
-                      Start speaking now! The AI assistant is listening and will respond to your questions.
+                      🎤 Connected! The AI assistant will greet you first, then you can start speaking.
                     </p>
                     <p className="text-sm text-gray-600 mt-2">
                       Try asking about {config.services.terminology.appointment}s, {config.services.terminology.service}s, or any questions from the sample list.
@@ -161,10 +404,15 @@ const Demo = () => {
               <div className="mt-12 pt-6 border-t border-gray-200">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="h-6 w-6 text-amber-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold block text-gray-800 mb-1">Note:</span>
-                    {config.demo.disclaimer}
-                  </p>
+                  <div className="text-sm text-gray-600">
+                    <p className="mb-2">
+                      <span className="font-semibold block text-gray-800 mb-1">Note:</span>
+                      {config.demo.disclaimer}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      💡 <strong>Microphone tip:</strong> If the microphone permission prompt doesn't appear, make sure you're using HTTPS (not HTTP) or localhost. Some browsers block microphone access on non-secure connections.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
