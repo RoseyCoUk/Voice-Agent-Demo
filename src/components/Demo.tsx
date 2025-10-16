@@ -1,11 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageSquare, AlertCircle, ChevronDown, Mic, MicOff } from 'lucide-react';
+import { Phone, MessageSquare, AlertCircle, ChevronDown, Mic, MicOff, User } from 'lucide-react';
 import { QuestionCategory } from '../types';
 import Vapi from '@vapi-ai/web';
 import { useConfig, getColorClasses } from '../config/config-context';
+import { useVoiceSelection } from '../hooks/useVoiceSelection';
+
+// Memoized question category item
+interface QuestionCategoryItemProps {
+  category: QuestionCategory;
+  isActive: boolean;
+  onToggle: () => void;
+  colorClasses: {
+    background: string;
+    hover: string;
+    [key: string]: string;
+  };
+}
+
+const QuestionCategoryItem = React.memo(({
+  category,
+  isActive,
+  onToggle,
+  colorClasses
+}: QuestionCategoryItemProps) => (
+  <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+    <button
+      onClick={onToggle}
+      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-t-lg"
+      aria-expanded={isActive}
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-2xl" aria-hidden="true">{category.emoji}</span>
+        <span className="font-medium text-gray-800">{category.title}</span>
+      </div>
+      <ChevronDown
+        className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
+          isActive ? 'transform rotate-180' : ''
+        }`}
+        aria-hidden="true"
+      />
+    </button>
+
+    {isActive && (
+      <div className="px-4 pb-4">
+        <p className="text-sm text-gray-600 mb-4 pt-2 border-t border-gray-100">
+          {category.description}
+        </p>
+        <div className="space-y-3">
+          {category.questions.map((question, qIndex) => (
+            <div
+              key={qIndex}
+              className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${colorClasses.background} ${colorClasses.hover}`}
+            >
+              "{question}"
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+));
+
+QuestionCategoryItem.displayName = 'QuestionCategoryItem';
 
 const Demo = () => {
   const { config } = useConfig();
+  const { selectedVoice, changeVoice, voiceId } = useVoiceSelection();
   const colorClasses = getColorClasses(config.branding.primaryColor);
   const [activeTab, setActiveTab] = useState('questions');
   const [isCallActive, setIsCallActive] = useState(false);
@@ -116,7 +176,7 @@ const Demo = () => {
         },
         voice: {
           provider: "11labs",
-          voiceId: config.assistant.voiceId
+          voiceId: voiceId
         },
         name: config.assistant.name,
         firstMessage: config.assistant.greeting,
@@ -294,6 +354,42 @@ const Demo = () => {
                   {config.demo.callToAction}
                 </p>
                 
+
+                {/* Voice Selection */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
+                    Select Voice:
+                  </label>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button
+                      onClick={() => changeVoice('FEMALE')}
+                      aria-pressed={selectedVoice === 'FEMALE'}
+                      className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 min-h-[44px] focus:outline-none focus:ring-4 focus:ring-blue-300 ${
+                        selectedVoice === 'FEMALE'
+                          ? 'bg-blue-500 text-white shadow-md ring-2 ring-blue-300'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
+                      }`}
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Female Voice</span>
+                      {selectedVoice === 'FEMALE' && <span className="ml-1">✓</span>}
+                    </button>
+                    <button
+                      onClick={() => changeVoice('MALE')}
+                      aria-pressed={selectedVoice === 'MALE'}
+                      className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 min-h-[44px] focus:outline-none focus:ring-4 focus:ring-blue-300 ${
+                        selectedVoice === 'MALE'
+                          ? 'bg-blue-500 text-white shadow-md ring-2 ring-blue-300'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
+                      }`}
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Male Voice</span>
+                      {selectedVoice === 'MALE' && <span className="ml-1">✓</span>}
+                    </button>
+                  </div>
+                </div>
+
                 {/* Microphone Status */}
                 <div className="mb-6 flex items-center justify-center gap-2">
                   {getMicrophoneStatusIcon()}
@@ -307,21 +403,22 @@ const Demo = () => {
                   </span>
                 </div>
 
-                <button 
+                <button
                   onClick={isCallActive ? handleCallEnd : handleCallStart}
                   disabled={micPermission === 'requesting'}
-                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
-                    isCallActive 
-                      ? 'bg-red-500 hover:bg-red-600' 
-                      : isConfigurationValid() 
-                        ? `${colorClasses.primary} ${colorClasses.primaryHover}`
-                        : 'bg-amber-500 hover:bg-amber-600'
+                  aria-label={isCallActive ? 'End call' : 'Start call'}
+                  className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-h-[52px] min-w-[160px] focus:outline-none focus:ring-4 focus:ring-offset-2 ${
+                    isCallActive
+                      ? 'bg-red-500 hover:bg-red-600 focus:ring-red-300'
+                      : isConfigurationValid()
+                        ? `${colorClasses.primary} ${colorClasses.primaryHover} focus:ring-blue-300`
+                        : 'bg-amber-500 hover:bg-amber-600 focus:ring-amber-300'
                   }`}
                 >
                   <Phone className="h-5 w-5" />
                   <span className="font-medium">
-                    {isCallActive ? 'End Call' : 
-                     micPermission === 'requesting' ? 'Requesting Permission...' : 
+                    {isCallActive ? 'End Call' :
+                     micPermission === 'requesting' ? 'Requesting Permission...' :
                      !isConfigurationValid() ? 'Setup Required' : 'Start Call'}
                   </span>
                 </button>
@@ -428,40 +525,13 @@ const Demo = () => {
               
               <div className="space-y-4">
                 {questionCategories.map((category, index) => (
-                  <div key={index} className="bg-white rounded-lg overflow-hidden shadow-sm">
-                    <button
-                      onClick={() => setActiveCategory(activeCategory === category.title ? null : category.title)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{category.emoji}</span>
-                        <span className="font-medium text-gray-800">{category.title}</span>
-                      </div>
-                      <ChevronDown
-                        className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
-                          activeCategory === category.title ? 'transform rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    
-                    {activeCategory === category.title && (
-                      <div className="px-4 pb-4">
-                        <p className="text-sm text-gray-600 mb-4 pt-2 border-t border-gray-100">
-                          {category.description}
-                        </p>
-                                                  <div className="space-y-3">
-                            {category.questions.map((question, qIndex) => (
-                              <div
-                                key={qIndex}
-                                className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${colorClasses.background} ${colorClasses.hover}`}
-                              >
-                                "{question}"
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <QuestionCategoryItem
+                    key={index}
+                    category={category}
+                    isActive={activeCategory === category.title}
+                    onToggle={() => setActiveCategory(activeCategory === category.title ? null : category.title)}
+                    colorClasses={colorClasses}
+                  />
                 ))}
               </div>
             </div>

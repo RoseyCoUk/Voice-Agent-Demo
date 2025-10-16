@@ -1,4 +1,5 @@
 import { BusinessConfig } from './business-config';
+import { BUSINESS_CATEGORIES } from './categories';
 
 // Auto Repair Shop Demo Configuration
 export const autoRepairConfig: BusinessConfig = {
@@ -137,7 +138,12 @@ Hours: Monday-Friday 7am-6pm, Saturday 8am-4pm`,
     title: "AI Auto Repair Assistant Demo - QuickFix Auto Repair",
     description: "Experience how an AI assistant can improve customer service and appointment management at QuickFix Auto Repair.",
     keywords: ["AI assistant", "auto repair", "car service", "vehicle maintenance", "automotive"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.AUTOMOTIVE,
+  tags: ['auto repair', 'car service', 'mechanic', 'maintenance', 'diagnostic'],
+  searchKeywords: ['auto repair', 'mechanic', 'car service', 'vehicle'],
+  availability: 'business-hours'
 };
 
 // Photography Studio Demo Configuration
@@ -277,7 +283,12 @@ Hours: Tuesday-Saturday 10am-7pm, Sunday by appointment`,
     title: "AI Photography Assistant Demo - Capture Moments Studio",
     description: "Experience how an AI assistant can improve client experience and session management at Capture Moments Studio.",
     keywords: ["AI assistant", "photography", "portrait", "wedding photography", "photo sessions"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.EVENTS,
+  tags: ['photography', 'portrait', 'wedding', 'photo session', 'professional'],
+  searchKeywords: ['photographer', 'photography', 'portrait', 'wedding'],
+  availability: 'appointment-only'
 };
 
 // Veterinary Clinic Demo Configuration
@@ -424,7 +435,12 @@ Hours: Monday-Friday 8am-6pm, Saturday 9am-4pm, Emergency service 24/7`,
     title: "AI Veterinary Assistant Demo - Caring Paws Veterinary",
     description: "Experience how an AI assistant can improve pet care and appointment management at Caring Paws Veterinary clinic.",
     keywords: ["AI assistant", "veterinary", "pet care", "animal hospital", "emergency vet"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.HEALTHCARE,
+  tags: ['veterinary', 'pet care', 'animal hospital', 'emergency', 'vet'],
+  searchKeywords: ['veterinary', 'vet', 'animal hospital', 'pet care'],
+  availability: '24/7'
 };
 
 // Interior Design Demo Configuration
@@ -571,7 +587,12 @@ Hours: Monday-Friday 9am-6pm, Saturday 10am-4pm`,
     title: "AI Interior Design Assistant Demo - Elite Design Studio",
     description: "Experience how an AI assistant can improve client experience and project management at Elite Design Studio.",
     keywords: ["AI assistant", "interior design", "home design", "space planning", "design consultation"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.HOME_PROPERTY,
+  tags: ['interior design', 'home design', 'decorator', 'renovation', 'space planning'],
+  searchKeywords: ['interior design', 'designer', 'home design', 'decorator'],
+  availability: 'appointment-only'
 };
 
 // Financial Advisory Demo Configuration
@@ -718,7 +739,12 @@ Hours: Monday-Friday 8am-6pm, Saturday 9am-2pm`,
     title: "AI Financial Advisory Demo - WealthWise Financial",
     description: "Experience how an AI assistant can improve client service and consultation management at WealthWise Financial.",
     keywords: ["AI assistant", "financial planning", "investment", "retirement planning", "financial advisor"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.PROFESSIONAL,
+  tags: ['financial planning', 'investment', 'retirement', 'wealth management', 'advisor'],
+  searchKeywords: ['financial advisor', 'investment', 'retirement', 'wealth'],
+  availability: 'appointment-only'
 };
 
 // Plumbing Services Demo Configuration
@@ -865,5 +891,10 @@ Hours: Monday-Friday 7am-7pm, Emergency service 24/7`,
     title: "AI Plumbing Assistant Demo - FlowMaster Plumbing",
     description: "Experience how an AI assistant can improve emergency response and service management at FlowMaster Plumbing.",
     keywords: ["AI assistant", "plumbing", "emergency plumbing", "plumber", "home services"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.HOME_PROPERTY,
+  tags: ['plumbing', 'emergency', 'repairs', 'pipes', '24/7'],
+  searchKeywords: ['plumber', 'plumbing', 'leak', 'pipe'],
+  availability: '24/7'
 };

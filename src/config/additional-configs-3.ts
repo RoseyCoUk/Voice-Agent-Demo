@@ -1,4 +1,5 @@
 import { BusinessConfig } from './business-config';
+import { BUSINESS_CATEGORIES } from './categories';
 
 // Marketing Agency Demo Configuration
 export const marketingAgencyConfig: BusinessConfig = {
@@ -144,7 +145,12 @@ Hours: Monday-Friday 9am-6pm, Consultation calls by appointment`,
     title: "AI Marketing Assistant Demo - GrowthGenius Marketing",
     description: "Experience how an AI assistant can improve lead generation and client service at GrowthGenius Marketing Agency.",
     keywords: ["AI assistant", "digital marketing", "marketing agency", "SEO", "social media marketing"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.PROFESSIONAL,
+  tags: ['digital marketing', 'SEO', 'social media', 'advertising', 'branding'],
+  searchKeywords: ['marketing', 'digital marketing', 'SEO', 'advertising'],
+  availability: 'business-hours'
 };
 
 // Coffee Shop Demo Configuration
@@ -291,7 +297,12 @@ Hours: Monday-Friday 6am-9pm, Saturday-Sunday 7am-10pm`,
     title: "AI Coffee Shop Assistant Demo - Brew & Bean Café",
     description: "Experience how an AI assistant can improve customer service and order management at Brew & Bean Café.",
     keywords: ["AI assistant", "coffee shop", "café", "coffee orders", "catering services"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.FOOD,
+  tags: ['coffee shop', 'café', 'coffee', 'pastries', 'catering'],
+  searchKeywords: ['coffee shop', 'café', 'coffee', 'espresso'],
+  availability: 'business-hours'
 };
 
 // Tutoring Service Demo Configuration
@@ -438,7 +449,12 @@ Hours: Monday-Friday 3pm-9pm, Saturday 9am-5pm, Sunday 1pm-6pm`,
     title: "AI Tutoring Assistant Demo - BrightMinds Tutoring",
     description: "Experience how an AI assistant can improve student support and appointment management at BrightMinds Tutoring.",
     keywords: ["AI assistant", "tutoring", "education", "test prep", "academic support"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.EDUCATION,
+  tags: ['tutoring', 'education', 'test prep', 'SAT', 'learning'],
+  searchKeywords: ['tutor', 'tutoring', 'test prep', 'education'],
+  availability: 'appointment-only'
 };
 
 // Travel Agency Demo Configuration
@@ -585,5 +601,10 @@ Hours: Monday-Friday 9am-7pm, Saturday 10am-4pm, Emergency support 24/7`,
     title: "AI Travel Assistant Demo - Wanderlust Travel Co.",
     description: "Experience how an AI assistant can improve travel planning and booking services at Wanderlust Travel Co.",
     keywords: ["AI assistant", "travel agency", "vacation planning", "travel booking", "trip planning"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.PROFESSIONAL,
+  tags: ['travel agency', 'vacation', 'booking', 'tours', 'flights'],
+  searchKeywords: ['travel agency', 'vacation', 'travel', 'booking'],
+  availability: 'business-hours'
 };

@@ -29,16 +29,20 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <IconComponent 
-            className={`h-8 w-8 ${isScrolled ? colorClasses.accentDark : colorClasses.accent}`} 
+          <IconComponent
+            className={`h-6 w-6 sm:h-8 sm:w-8 ${isScrolled ? colorClasses.accentDark : colorClasses.accent}`}
             strokeWidth={2}
+            aria-hidden="true"
           />
-          <span className={`font-semibold text-xl ${isScrolled ? 'text-gray-800' : 'text-gray-700'}`}>
+          <span className={`font-semibold text-lg sm:text-xl ${isScrolled ? 'text-gray-800' : 'text-gray-700'}`}>
             {config.business.name}
           </span>
         </div>
         <nav>
-          <button className={`px-4 py-2 rounded-full text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${colorClasses.primary} ${colorClasses.primaryHover} ${colorClasses.ring}`}>
+          <button
+            aria-label="Contact us"
+            className={`px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full text-white transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50 min-h-[44px] ${colorClasses.primary} ${colorClasses.primaryHover} ${colorClasses.ring}`}
+          >
             Contact Us
           </button>
         </nav>

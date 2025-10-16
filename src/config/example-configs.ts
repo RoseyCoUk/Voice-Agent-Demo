@@ -1,4 +1,5 @@
 import { BusinessConfig } from './business-config';
+import { BUSINESS_CATEGORIES } from './categories';
 
 // Legal Services Demo Configuration
 export const legalServicesConfig: BusinessConfig = {
@@ -176,7 +177,12 @@ Hours: Monday-Friday 9am-6pm, Emergency consultations available 24/7`,
     title: "AI Legal Assistant Demo - LegalAssist Pro",
     description: "Experience how an AI assistant can improve client communication at LegalAssist Pro Law Firm, especially when attorneys are in court or meetings.",
     keywords: ["AI assistant", "legal services", "law firm", "client intake", "legal consultation"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.LEGAL,
+  tags: ['legal', 'attorney', 'consultation', 'law firm', 'legal advice'],
+  searchKeywords: ['lawyer', 'legal', 'attorney', 'law', 'court', 'legal services', 'consultation'],
+  availability: '24/7'
 };
 
 // Restaurant/Food Service Demo Configuration
@@ -355,7 +361,12 @@ Hours: Tuesday-Sunday 5pm-10pm, Closed Mondays`,
     title: "AI Restaurant Assistant Demo - Bella Vista Bistro",
     description: "Experience how an AI assistant can improve guest communication at Bella Vista Bistro, especially during busy dinner service.",
     keywords: ["AI assistant", "restaurant", "reservations", "dining", "hospitality"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.FOOD,
+  tags: ['restaurant', 'Italian', 'fine dining', 'reservations', 'catering'],
+  searchKeywords: ['restaurant', 'food', 'dining', 'Italian', 'bistro', 'reservation', 'dinner'],
+  availability: 'business-hours'
 };
 
 // Tech Support/SaaS Demo Configuration
@@ -534,7 +545,12 @@ Hours: 24/7 Technical Support Available`,
     title: "AI Technical Support Demo - CloudTech Solutions",
     description: "Experience how an AI assistant can improve technical support at CloudTech Solutions, providing 24/7 assistance and smart escalation.",
     keywords: ["AI assistant", "technical support", "cloud services", "help desk", "IT support"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.TECHNOLOGY,
+  tags: ['tech support', 'cloud', 'IT', 'SaaS', 'troubleshooting'],
+  searchKeywords: ['technical support', 'tech', 'IT', 'cloud', 'help desk', 'support', 'troubleshooting'],
+  availability: '24/7'
 };
 
 // Dental Clinic Demo Configuration
@@ -691,5 +707,10 @@ Hours: Monday-Friday 8am-5pm, Saturday 9am-2pm`,
     title: "AI Dental Assistant Demo - Bright Smile Dental",
     description: "Experience how an AI assistant can improve patient communication at Bright Smile Dental, making dental care more accessible.",
     keywords: ["AI assistant", "dental", "dentist", "appointments", "patient care"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.HEALTHCARE,
+  tags: ['dental', 'dentist', 'teeth', 'oral health', 'family dentistry'],
+  searchKeywords: ['dentist', 'dental', 'teeth', 'cleaning', 'checkup', 'oral', 'cavity', 'whitening'],
+  availability: 'business-hours'
 };

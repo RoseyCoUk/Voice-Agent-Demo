@@ -1,3 +1,5 @@
+import { BusinessCategory } from './categories';
+
 export interface BusinessConfig {
   // Basic Business Information
   business: {
@@ -71,7 +73,23 @@ export interface BusinessConfig {
     description: string;
     keywords: string[];
   };
+
+  // NEW FIELDS - Phase 1 Infrastructure
+  /** Business category from BUSINESS_CATEGORIES */
+  category: BusinessCategory;
+
+  /** Array of tags for filtering (3-5 recommended) */
+  tags: string[];
+
+  /** Array of search keywords for enhanced search */
+  searchKeywords: string[];
+
+  /** Business availability type */
+  availability: 'business-hours' | '24/7' | 'appointment-only';
 }
+
+// Helper type exports
+export type AvailabilityType = 'business-hours' | '24/7' | 'appointment-only';
 
 // Default configuration for Osteopathy Clinic (current example)
 export const defaultOsteopathyConfig: BusinessConfig = {
@@ -257,5 +275,11 @@ Hours: Monday-Friday 8am-7pm, Saturday 9am-2pm`,
     title: "AI Phone Assistant Demo - Spinal Solutions",
     description: "Experience how an AI phone assistant can improve client calls at Spinal Solutions Osteopathy Clinic, especially when practitioners are with patients.",
     keywords: ["AI assistant", "osteopathy", "phone system", "patient care", "clinic automation"]
-  }
+  },
+
+  // NEW FIELDS - Phase 1 Infrastructure
+  category: 'Healthcare & Medical',
+  tags: ['osteopathy', 'back pain', 'sports injury', 'wellness', 'manual therapy'],
+  searchKeywords: ['osteopath', 'spine', 'spinal', 'back', 'neck', 'pain', 'treatment', 'manipulation'],
+  availability: 'business-hours'
 };

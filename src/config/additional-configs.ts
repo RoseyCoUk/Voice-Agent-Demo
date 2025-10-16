@@ -1,4 +1,5 @@
 import { BusinessConfig } from './business-config';
+import { BUSINESS_CATEGORIES } from './categories';
 
 // Real Estate Agency Demo Configuration
 export const realEstateConfig: BusinessConfig = {
@@ -137,7 +138,12 @@ Hours: Monday-Saturday 9am-7pm, Sunday 12pm-5pm`,
     title: "AI Real Estate Assistant Demo - Premier Properties",
     description: "Experience how an AI assistant can improve lead generation and client service at Premier Properties real estate agency.",
     keywords: ["AI assistant", "real estate", "property", "home buying", "lead generation"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.HOME_PROPERTY,
+  tags: ['real estate', 'property', 'buying', 'selling', 'homes'],
+  searchKeywords: ['realtor', 'real estate', 'property', 'house'],
+  availability: 'business-hours'
 };
 
 // Fitness Studio Demo Configuration  
@@ -277,7 +283,12 @@ Hours: Monday-Friday 5am-10pm, Saturday-Sunday 7am-8pm`,
     title: "AI Fitness Assistant Demo - FitLife Studio",
     description: "Experience how an AI assistant can improve member experience and class management at FitLife Studio.",
     keywords: ["AI assistant", "fitness", "gym", "personal training", "class booking"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.BEAUTY_WELLNESS,
+  tags: ['fitness', 'gym', 'workout', 'training', 'wellness'],
+  searchKeywords: ['gym', 'fitness', 'workout', 'personal training'],
+  availability: 'business-hours'
 };
 
 // Accounting Firm Demo Configuration
@@ -424,7 +435,12 @@ Hours: Monday-Friday 9am-6pm, Extended hours during tax season`,
     title: "AI Accounting Assistant Demo - TaxPro Accounting",
     description: "Experience how an AI assistant can improve client service and appointment management at TaxPro Accounting firm.",
     keywords: ["AI assistant", "accounting", "tax preparation", "bookkeeping", "financial services"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.PROFESSIONAL,
+  tags: ['accounting', 'tax', 'bookkeeping', 'financial', 'CPA'],
+  searchKeywords: ['accountant', 'tax', 'CPA', 'bookkeeping'],
+  availability: 'appointment-only'
 };
 
 // Pet Grooming Demo Configuration
@@ -571,7 +587,12 @@ Hours: Tuesday-Saturday 8am-6pm, Closed Sunday-Monday`,
     title: "AI Pet Grooming Assistant Demo - Pawfect Grooming",
     description: "Experience how an AI assistant can improve pet care and appointment management at Pawfect Grooming services.",
     keywords: ["AI assistant", "pet grooming", "dog grooming", "pet care", "animal services"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.PET_SERVICES,
+  tags: ['pet grooming', 'dog', 'cat', 'grooming', 'pet care'],
+  searchKeywords: ['pet grooming', 'dog grooming', 'groomer', 'pet'],
+  availability: 'appointment-only'
 };
 
 // Hair Salon Demo Configuration
@@ -718,5 +739,10 @@ Hours: Tuesday-Saturday 9am-8pm, Sunday 10am-5pm, Closed Monday`,
     title: "AI Hair Salon Assistant Demo - Luxe Hair Studio",
     description: "Experience how an AI assistant can improve client experience and appointment management at Luxe Hair Studio.",
     keywords: ["AI assistant", "hair salon", "hair styling", "hair color", "beauty services"]
-  }
+  },
+
+  category: BUSINESS_CATEGORIES.BEAUTY_WELLNESS,
+  tags: ['hair salon', 'styling', 'hair color', 'beauty', 'haircut'],
+  searchKeywords: ['hair salon', 'hairdresser', 'stylist', 'haircut'],
+  availability: 'appointment-only'
 };
